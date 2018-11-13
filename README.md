@@ -10,7 +10,7 @@ Installez le module Pymongo ( pip install pymongo dans powershell )
 
 Installez le module Tkinter ( pip install tkinter )
 
-Téléchargez le fichier movies_mongodb.json 
+Téléchargez les fichiers du projet et notez le chemin du répertoire 
 
 # Chargement du jeu de données json et lancement du daemon MongoD sur le port 27017  
 Dans un terminal lancez les commandes suivantes: 
