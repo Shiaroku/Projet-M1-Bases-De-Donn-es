@@ -1,0 +1,89 @@
+/* In Cmd.exe */
+/*Exo 1 */
+/* Dans un terminal */
+cd "C:\Program Files\MongoDB\Server\4.0\bin\" 
+mongod
+/* Dans un second terminal */
+cd "C:\Program Files\MongoDB\Server\4.0\bin\" 
+mongoimport --db tourPedia --collection paris "C:\Users\SEBASTIEN\tourPedia_paris.json"
+
+/* Ouvrir Robo3T et se connecter à la base */
+
+
+/*Exo 2 */
+
+db.paris.find({"category" : "accommodation",
+"services":"blanchisserie"});
+
+/*Exo 3 */
+
+db.paris.find({"category" : "accommodation"},
+{"location.address" : 1 , 
+"_id":0}
+);
+
+/*Exo 4 */
+
+db.paris.find({"reviews" : 
+    { $elemMatch : 
+        { "language" : "en" , 
+        "rating" : {$gte : 3}
+        }
+    }
+},
+{"reviews" : 1 , "_id" : 0 }
+);
+
+/* De maniere équivalente cela s'écrit */
+
+varMatch = { $match : {"reviews" : { $elemMatch : { "language" : "en" , "rating" : {$gte : 3}}}}};
+varProject = { $project : {"reviews" : 1 , "_id" : 0 }};
+db.paris.aggregate( [ varMatch, varProject ] );
+
+/* Exo 5 */
+
+
+varUnwind = { $unwind : "$location.address"};
+varGroup = { $group : {"_id" : "$category", "total" : {$sum : 1} } };
+varSort = { $sort : {"total" : -1 } };
+db.paris.aggregate( [varUnwind,varGroup,varSort] );
+
+/* Verification */
+
+db.paris.aggregate( [{ $match : {"category" : "attraction" , "location.address" : {$ne : null}}}
+                    ,{ $project : {"location.address" : 1 , "_id" : 0 }} 
+                    ] );
+
+
+
+/* Exo 6 */
+
+
+/*  PREMIERE TEMPTATIVE POUR FABRIQUER LA REQUETE
+varMatch = { $match : {"category" : "accommodation"}};
+varUnwind = { $unwind : "$location.address"};
+varGroup = { $group : {"_id" : "$services", "total" : {$sum : 1} } };
+varSort = { $sort : {"total" : -1 } };
+varMatch2 = { $match : { $and : [ {"_id" : { $ne : null }}, {"_id" : { $ne : "" }} , {"_id" : { $ne : [] }}],  "_id" : { $size: 1 }  }  } ;
+db.paris.aggregate( [varMatch,varUnwind,varGroup,varSort,varMatch2] );
+
+Ici l'on garde que les arrays de 1 éléments non nulls ou vide ou "" mais 
+il compte sur les listes composées d'exactement cet élément, donc ne proposant QUE ce service, il va falloir faire autrement...
+
+*/
+
+
+/* Vraie réponse */
+
+
+db.paris.aggregate( [{ $match : {"category" : "accommodation"}}
+                    ,{ $unwind : "$services"}
+                    ,{ $project : { "services" : 1 ,"addresse" : "$location.address" , "_id" : 0 }}
+                    ,{ $group : {"_id" : "$services", "total" : {$sum : 1} } }
+                    ,{ $sort : {"total" : -1 } }
+                    ,{ $match : { $and : [ {"_id" : { $ne : null }}, {"_id" : { $ne : "" }} , {"_id" : { $ne : [] }}]  }  }
+                    ,{ $project : { "nom_du_service" : "$_id" ,"nombre_de_lieux_de_type_accommodation_proposant_ce_service" : "$total" , "_id" : 0}}
+                    ] );
+
+
+
