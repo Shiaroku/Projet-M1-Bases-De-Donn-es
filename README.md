@@ -4,9 +4,11 @@ Projet en NoSQL sur MongoDB avec interface graphique en Python
 # Pré-requis
 Installez MongoDB 
 
-Installez Pymongo ( pip install pymongo dans powershell )
+Installez Python
 
-Installez Tkinter ( pip install tkinter )
+Installez le module Pymongo ( pip install pymongo dans powershell )
+
+Installez le module Tkinter ( pip install tkinter )
 
 Téléchargez le fichier movies_mongodb.json 
 
@@ -18,5 +20,11 @@ cd "C:\Program Files\MongoDB\Server\4.0\bin\"  % remplacez par le chemin adéqua
 mongoimport --db movies --collection set "...\movies_mongodb.json"
 
 mongod 
+
+# Lancement du programme
+Dans un terminal :
+
+python ...filepath.../movies.py
+
 
 
