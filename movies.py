@@ -1,11 +1,11 @@
-import pymongo 
+import pymongo  
 from tkinter import * 
 import os
 
 """
 Importation du jeu de données dans MongoDB sur le port par défaut 27017
 """
-os.system('cd "C:\\Program Files\\MongoDB\\Server\\4.0\\bin\\" ; mongoimport --db movies --collection set "C:\\Users\\SEBASTIEN\\Desktop\\movies_mongodb.json" ; mongod ')
+#os.system('cd "C:\\Program Files\\MongoDB\\Server\\4.0\\bin\\" ; mongoimport --db movies --collection set "C:\\Users\\SEBASTIEN\\Desktop\\movies_mongodb.json" ; mongod ')
 
 """
 Etablissement d'un lien entre python et la base
@@ -21,6 +21,7 @@ mycol = mydb["set"]
 fenetre = Tk()
 fenetre.title("Projet MongoDB/Python sur une base de données json de films")
 fenetre.geometry("480x720")
+
 #fenetre.resizable(width=0,height=0)
 
 
@@ -58,7 +59,7 @@ entree2 = Entry(fenetre, textvariable="", width=50)
 entree2.pack()
 
 liste2 = Listbox(fenetre)
-liste2.pack()
+liste2.pack(side="top",fill="x", expand=True)
 
 def generate2():
     liste1=[]
@@ -84,7 +85,7 @@ rat_min = Entry(fenetre, textvariable="", width=50)
 rat_min.pack()
 
 lstrat = Listbox(fenetre)
-lstrat.pack()
+lstrat.pack(side="top",fill="x", expand=True)
 
 def strtofloat(str):
     try:
