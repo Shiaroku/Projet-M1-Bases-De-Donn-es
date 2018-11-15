@@ -3,6 +3,8 @@ Projet en NoSQL sur MongoDB avec interface graphique en Python
 
 Activity.mongo contient le code source des exercices de OpenClassroom sur le NoSQL
 
+Movies.exe est un petit programme graphique d'interrogation d'une base de données de films sur des critères simples pour m'entrainer a utiliser json et MongoDB autrement que par des requêtes directes sur Robo3T
+
 (voir http://exercices.openclassrooms.com/assessment/647?id=4462426&slug=maitrisez-les-bases-de-donnees-nosql&login=7398438&tk=197d6beaf9d732115a8db1ecf037698a&sbd=2016-02-01&sbdtk=fa78d6dd3126b956265a25af9b322d55)
 
 # Pré-requis
