@@ -38,15 +38,24 @@ liste.pack(side="top",fill="x", expand=True)
 def generate():
     liste1=[]
     liste.delete(0,liste.size())
-   
-    myquery = { "fields.title": str(entree.get()) ,} 
-    # myquery["fields.title"]=str(entree.get())
+    
+    
+    myquery= { "fields.title": {"$regex" : "", "$options" : "i"} }
+    myquery["fields.title"]["$regex"]=(str(entree.get()))    
+    #myquery = { "fields.title": "" }
+    #myquery["fields.title"]=str(entree.get())
 
-    myproj= {"fields.plot" : 1 , "_id" : 0 }
+    myproj= {"fields.title" : 1, "fields.plot" : 1 , "_id" : 0 }
 
     mydoc = mycol.find(myquery, myproj)
     for x in mydoc:
-        liste1.append(x["fields"]["plot"])
+        try: 
+            if myquery["fields.title"]["$regex"]=="" :
+                break
+            else:
+                liste1.append(x["fields"]["title"]+" : "+x["fields"]["plot"])
+        except:
+            print()
     for i in range(len(liste1)):
         liste.insert(i+1, liste1[i])
 
@@ -75,10 +84,31 @@ def generate2():
     for i in range(len(liste1)):
         liste2.insert(i+1, liste1[i])
 
+def generate2beta():
+    liste1=[]
+    liste2.delete(0,liste2.size())
+    
+    myquery= { "fields.actors": {"$regex" : "", "$options" : "i"} }
+    myquery["fields.actors"]["$regex"]=(str(entree2.get()))    
+   
+    myproj= {"fields.actors" : 1, "fields.title" : 1 , "_id" : 0 }
+    mydoc = mycol.find(myquery, myproj)
 
-Button(text="Generer", command=generate2).pack()
+    for x in mydoc:
+        try: 
+            if myquery["fields.actors"]["$regex"]=="" :
+                break
+            else:
+                liste1.append(str(x["fields"]["actors"])+" joue(nt) dans le film : "+str(x["fields"]["title"]))
+        except:
+            print()
+    for i in range(len(liste1)):
+        liste2.insert(i+1, liste1[i])
+
+Button(text="Generer", command=generate2beta).pack()
 
 Label(fenetre, text="Films récents avec une note sur 10 supérieure à:").pack()
+Label(fenetre, text="(triés par date de sortie du plus récent au plus vieux)").pack()
 
 StringVar().set("")
 rat_min = Entry(fenetre, textvariable="", width=50)
